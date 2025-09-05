@@ -15,26 +15,13 @@ jobs:
       - name: Run Bash Script
         run: ./build.sh
 
-      - name: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: caddy
-          path: ./caddy
-
-
-  release:
-    runs-on: ubuntu-latest
-    needs: [run-script]
-    steps:
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-
       - name: Create Tag
         run: |
           go_latest_version=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
           caddy_latest_version=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r '.tag_name')
+          caddy_azure_plugin_latest_version=$(curl -s https://api.github.com/repos/caddy-dns/azure/releases/latest | jq -r '.tag_name')
 
-          tag_name="${go_latest_version}-caddy${caddy_latest_version}"
+          tag_name="${go_latest_version}-caddy${caddy_latest_version}-caddy_dns_azure_plugin${caddy_azure_plugin_latest_version}"
 
           git config --local user.email "taggerbot@empty.empty"
           git config --local user.name "taggerbot from github action"
@@ -46,3 +33,4 @@ jobs:
         with:
           files: |
             caddy
+
