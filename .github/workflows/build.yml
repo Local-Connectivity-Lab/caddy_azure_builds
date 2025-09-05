@@ -28,10 +28,12 @@ jobs:
           git tag $tag_name
           git push origin $tag_name
 
+          echo "TAG_NAME=$tag_name" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ env.TAG_NAME }}
           files: |
             caddy
 
