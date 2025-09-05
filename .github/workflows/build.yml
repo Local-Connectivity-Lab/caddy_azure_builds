@@ -1,8 +1,9 @@
 name: run build script
 
-on:
-  schedule:
-    - cron: '0 14 * * MON' # every monday at 14
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
   run-script:
