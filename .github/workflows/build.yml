@@ -1,0 +1,35 @@
+name: run build script
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Run Bash Script
+        run: ./build.sh
+
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: caddy
+          path: ./caddy
+
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            caddy
