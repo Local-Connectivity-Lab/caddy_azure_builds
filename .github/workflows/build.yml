@@ -21,7 +21,7 @@ jobs:
           caddy_latest_version=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r '.tag_name')
           caddy_azure_plugin_latest_version=$(curl -s https://api.github.com/repos/caddy-dns/azure/releases/latest | jq -r '.tag_name')
 
-          tag_name="${go_latest_version}-caddy${caddy_latest_version}-caddy_dns_azure_plugin${caddy_azure_plugin_latest_version}"
+          tag_name="${go_latest_version}-caddy_${caddy_latest_version}-caddy_dns_azure_plugin_${caddy_azure_plugin_latest_version}"
 
           git config --local user.email "taggerbot@empty.empty"
           git config --local user.name "taggerbot from github action"
