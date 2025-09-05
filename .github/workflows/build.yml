@@ -29,6 +29,18 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
 
+      - name: Create Tag
+        run: |
+          go_latest_version=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+          caddy_latest_version=$(curl -s https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r '.tag_name')
+
+          tag_name="${go_latest_version}-caddy${caddy_latest_version}"
+
+          git config --local user.email "taggerbot@empty.empty"
+          git config --local user.name "taggerbot from github action"
+          git tag $tag_name
+          git push origin $tag_name
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
